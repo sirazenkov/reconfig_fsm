@@ -1,2 +1,2 @@
 # reconfig_fsm
-Reconfigurable fsm based on substitutions HDL implementation
+Reconfigurable FSM based on substitutions HDL implementation
