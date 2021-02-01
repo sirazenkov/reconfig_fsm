@@ -18,7 +18,7 @@ library ieee; use ieee.std_logic_1164.all;
 
 package params is
 
-    constant C_LENGTH : integer := 2;          -- data length
+    constant C_LENGTH : integer := 4;          -- data length
     constant C_N : integer := 2**C_LENGTH;     -- number of states
     
     subtype fsm_bus is STD_LOGIC_VECTOR(C_LENGTH-1 downto 0); -- data type passed through fsm

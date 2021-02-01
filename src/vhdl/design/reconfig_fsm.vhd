@@ -75,9 +75,9 @@ begin
 
     --Sub_I (I = 0, ... , states quantity)
 ----------------------------------
-    Sub_I: fixed_func_subs port map(
-        d => xk, 
-        subs => main_bus
+    Sub_I: entity work.sub_scheme port map(
+        addr => xk, 
+        dout => main_bus
     );
 ---------------------------------- 
 
@@ -114,6 +114,5 @@ begin
         sel => sy,
         dout => y
     );
-    
 
 end struct;
