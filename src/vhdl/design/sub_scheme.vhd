@@ -2,8 +2,8 @@
 --company	    : Tomsk State University
 --developer	    : sirazenkov
 --e-mail	    : sirazenkov@stud.tsu.ru
---description	: With-select implementatuion of fixed substitutions
---version	    : 1.0 (NOT DONE)
+--description	: With-select (scheme) implementatuion of fixed substitutions
+--version	    : 1.1
 --===============================================================================
 --					             CHANGES LOG
 ---------------------------------------------------------------------------------
@@ -16,8 +16,7 @@
 --              |     | 
 --===============================================================================
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+library IEEE; use IEEE.STD_LOGIC_1164.ALL;
 
 library work; use work.params.all;
 
@@ -28,6 +27,7 @@ end sub_scheme;
 
 architecture synth of sub_scheme is
 begin
+
     with addr select dout(0) <=
         X"E" when X"0",
         X"4" when X"1",
@@ -330,5 +330,6 @@ begin
         X"7" when X"D",
         X"2" when X"E",
         X"E" when X"F",
-        X"0" when others;                                         
+        X"0" when others;
+                                                 
 end synth;
