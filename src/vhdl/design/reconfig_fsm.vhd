@@ -84,7 +84,7 @@ architecture struct of reconfig_fsm is
             dout : out fsm_bus
         );
     end component;
-  --attribute dont_touch of mux : component is "yes";
+    --attribute dont_touch of mux : component is "yes";
         
 begin
     work_mode <= not subs_set;
@@ -114,12 +114,12 @@ begin
     --Sub_I (I = 0, ... , states quantity)
 ----------------------------------
     
-   Sub_I: sub_rom port map(
+    Sub_I: sub_rom port map(
         addr => xk,
         dout => main_bus
     );
     
---    sub_ram_block port map(
+--     sub_ram_block port map(
 --        clk => '0',
 --        we => X"0000",
 --        ra => (xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk),
