@@ -39,7 +39,7 @@ architecture struct of reconfig_fsm is
     signal xk, sk, sy : fsm_bus;                -- for Sub_X(X), Sub_S(S) and Sub_Y(S)
     signal main_bus : sub_bus;                 -- combination of fixed substitutions Sub_I, I = 0, ... , 2^n-1
     
-     attribute dont_touch : string;
+     --attribute dont_touch : string;
      
 --    component fixed_func_subs
 --        port(
@@ -49,15 +49,15 @@ architecture struct of reconfig_fsm is
 --    end component;
 --    attribute dont_touch of fixed_func_subs : component is "yes";
      
-    component sub_rom is
-        port (
-          addr : in fsm_bus;
-          dout : out sub_bus   
-           );
-   end component; 
-   attribute dont_touch of sub_rom : component is "yes";   
+--    component sub_rom is
+--        port (
+--          addr : in fsm_bus;
+--          dout : out sub_bus   
+--           );
+--   end component; 
+--   attribute dont_touch of sub_rom : component is "yes";   
    
---   component sub_ram_block is
+--   component sub_ram_lut is
 --        port (
 --          clk : in STD_LOGIC;
 --          we : in STD_LOGIC_VECTOR(C_N-1 downto 0);
@@ -67,15 +67,15 @@ architecture struct of reconfig_fsm is
 --          dout : out sub_bus   
 --           );
 --   end component; 
---   attribute dont_touch of sub_ram_block : component is "yes";  
+--   attribute dont_touch of sub_ram_lut : component is "yes";
              
---    component sub_scheme is
+--    component sub_bool is
 --        port ( 
 --            addr : in fsm_bus;
 --            dout : out sub_bus
 --        );
 --    end component;
---    attribute dont_touch of sub_scheme : component is "yes";
+--    attribute dont_touch of sub_bool : component is "yes";
 
     component mux is
         port ( 
@@ -85,6 +85,16 @@ architecture struct of reconfig_fsm is
         );
     end component;
     --attribute dont_touch of mux : component is "yes";
+    
+    component sub_ram is
+    port ( 
+           clk : in STD_LOGIC;
+           we : in STD_LOGIC;
+           ra : in fsm_bus;
+           wa : in fsm_bus;
+           d : in fsm_bus;
+           dout : out fsm_bus);
+    end component;
         
 begin
     work_mode <= not subs_set;
@@ -101,8 +111,7 @@ begin
     end process clock; 
 --------------------------------------------------------   
      
-    Sub_X: entity work.sub_ram(synth)
-        port map(
+    Sub_X: sub_ram port map(
         clk => clk,
         we => subs_set,
         ra => x, 
@@ -114,12 +123,12 @@ begin
     --Sub_I (I = 0, ... , states quantity)
 ----------------------------------
     
-    Sub_I: sub_rom port map(
-        addr => xk,
-        dout => main_bus
-    );
+--    sub_rom port map(
+--        addr => xk,
+--        dout => main_bus
+--    );
     
---     sub_ram_block port map(
+--     sub_ram_lut port map(
 --        clk => '0',
 --        we => X"0000",
 --        ra => (xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk, xk),
@@ -128,15 +137,19 @@ begin
 --        dout => main_bus
 --    );
     
---    sub_scheme port map(
+--    sub_bool port map(
 --        addr => xk,
 --        dout => main_bus
 --    );
+
+   Sub_I: entity work.fixed_func_subs(synth) port map(
+        d => xk,
+        subs => main_bus
+    );
     
 ---------------------------------- 
 
-    Sub_S: entity work.sub_ram(synth)
-        port map(
+    Sub_S: sub_ram port map(
         clk => clk, 
         we => subs_set,
         ra => state,
@@ -152,8 +165,7 @@ begin
         dout => next_state
     );
 
-    Sub_Y: entity work.sub_ram(synth)
-        port map(
+    Sub_Y: sub_ram port map(
         clk => clk, 
         we => subs_set,  
         ra => state,
